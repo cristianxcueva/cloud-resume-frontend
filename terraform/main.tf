@@ -150,3 +150,72 @@ resource "aws_route53_record" "cloudfront_alias" {
   }
 }
 
+#dynamodb table for visitor count
+resource "aws_dynamodb_table" "visitor_count_table" {
+  name         = "visitor_count"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "id"
+  attribute {
+    name = "id"
+    type = "S"
+  }
+}
+
+#iam role for lambda function
+resource "aws_iam_role" "lambda_role" {
+  name = "lambda_role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      }
+      }
+    ]   
+  })
+}
+
+#dynamodb policy for lambda function
+resource "aws_iam_role_policy" "dynamodb_policy" {
+  name = "dynamodb_policy"
+  role = aws_iam_role.lambda_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:UpdateItem"
+        ]
+        Effect   = "Allow"
+        Resource = aws_dynamodb_table.visitor_count_table.arn
+      }
+    ]
+  })
+}
+
+#aws cloudwatch role policy for lambda function
+resource "aws_iam_role_policy_attachment" "lambda_logging" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+#lambda function for visitor count zip
+data "archive_file" "lambda_zip" {
+  type        = "zip"
+  source_file  = "${path.module}/../lambda/lambda_function.py"
+  output_path = "${path.module}/../lambda/lambda_function.zip"
+}
+
+#aws lambda function for visitor count
+resource "aws_lambda_function" "visitor_count_lambda" {
+  function_name = "visitor_count_lambda"
+  role          = aws_iam_role.lambda_role.arn
+  handler       = "lambda_function.lambda_handler"
+  runtime       = "python3.12"
+  filename      = data.archive_file.lambda_zip.output_path
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+} 
