@@ -34,14 +34,6 @@ Authenticates through a dedicated IAM user, scoped to exactly two things: writin
 
 ---
 
-## Mixed Content and the Counter Button
-
-The page loads over HTTPS through CloudFront, but the Lambda function behind the counter answers over plain HTTP. That's not a bug, it's the browser's mixed content rule doing its job: an HTTPS page isn't allowed to call an HTTP endpoint, so the counter fails when loaded through the live site. It works fine opened locally, where there's no HTTPS context to trigger the rule.
-
-The fix is an Application Load Balancer with its own certificate in front of the Lambda, or routing the API through CloudFront as a second origin. Neither felt worth the added cost for a personal resume site, so this stays as a known, understood gap rather than something silently broken.
-
----
-
 ## Project History
 
 This repo split off from a single combined repository once CI/CD needed two separate pipelines. The original, unsplit commit history from Milestones 1 through 6 lives on the `build-history` branch here and in the backend repo.
@@ -52,4 +44,3 @@ This repo split off from a single combined repository once CI/CD needed two sepa
 
 Cristian Cueva, IT Support Analyst transitioning into Cloud Engineering
 [GitHub](https://github.com/cristianxcueva)
-
