@@ -1,42 +1,250 @@
-body {
-  font-family: Arial, sans-serif;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0;
-  background-color: #ffffff;
-  color: #1a1a1a;
+/* ============================================
+   Tokens
+   ============================================ */
+:root {
+  --navy: #0F1B2D;
+  --navy-soft: #16263D;
+  --bg: #FAFAF8;
+  --ink: #1A1A1A;
+  --slate: #5B6B7F;
+  --gold: #C9A227;
+  --gold-soft: #E8DBB0;
+  --rule: #E2DFD6;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg);
+  color: var(--ink);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* ============================================
+   Header
+   ============================================ */
 header {
-  background-color: #1b263b;
+  background-color: var(--navy);
+  background-image: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
   color: #ffffff;
-  padding: 30px 20px;
+  padding: 56px 24px 40px;
   text-align: center;
+  position: relative;
+}
+
+header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold) 0%, transparent 60%);
+}
+
+header h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 12px;
+}
+
+header .title {
+  font-size: 1.05rem;
+  color: var(--gold-soft);
+  margin: 0 0 14px;
+  font-weight: 500;
+}
+
+header .contact {
+  font-size: 0.9rem;
+  color: #C7CDD6;
+  margin: 0 0 18px;
+}
+
+header .blog-link a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--gold);
+  text-decoration: none;
+  border: 1px solid rgba(201, 162, 39, 0.4);
+  padding: 6px 16px;
+  border-radius: 999px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+header .blog-link a:hover {
+  background-color: var(--gold);
+  color: var(--navy);
+}
+
+header .blog-link a::before {
+  content: "↗ ";
+}
+
+/* ============================================
+   Layout
+   ============================================ */
+main {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 48px 32px 24px;
 }
 
 section {
-  padding: 20px 0;
-  margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 32px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+section:last-of-type {
+  border-bottom: none;
 }
 
 h2 {
-  padding: 1px 0;
-  margin-bottom: 20px;
-  color: #1b263b;
-  border-bottom: 2px solid #1b263b;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--slate);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+  position: sticky;
+  top: 24px;
+  align-self: start;
 }
 
-h3 {
-  color: #415a77;
-  margin-top: 20px;
+h2::before {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 3px;
+  background-color: var(--gold);
   margin-bottom: 10px;
 }
 
-article {
-  margin-bottom: 25px;
+section > h2 {
+  grid-column: 1;
 }
 
-ul {
-  line-height: 1.6;
-  margin-left: 5px;
+section > p,
+section > ul,
+section > h3,
+section > article {
+  grid-column: 2;
+}
+
+h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 24px 0 10px;
+}
+
+section h3:first-of-type {
+  margin-top: 0;
+}
+
+p {
+  color: var(--ink);
+  margin: 0 0 12px;
+}
+
+.job-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--slate);
+  margin-bottom: 12px;
+}
+
+/* ============================================
+   Tag chips for Certifications & Skills
+   ============================================ */
+.tag-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 8px;
+  padding: 0;
+}
+
+.tag-list li {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--navy);
+  background-color: #ffffff;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 6px 12px;
+  white-space: nowrap;
+}
+
+/* ============================================
+   Regular bullet lists (work experience)
+   ============================================ */
+article ul {
+  margin: 0 0 24px;
+  padding-left: 20px;
+}
+
+article li {
+  margin-bottom: 8px;
+}
+
+article:last-child ul {
+  margin-bottom: 0;
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+footer {
+  text-align: center;
+  padding: 32px 0 48px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--slate);
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 640px) {
+  header h1 {
+    font-size: 2rem;
+  }
+
+  main {
+    padding: 32px 20px 16px;
+  }
+
+  section {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 24px 0;
+  }
+
+  h2 {
+    position: static;
+  }
+
+  section > h2,
+  section > p,
+  section > ul,
+  section > h3,
+  section > article {
+    grid-column: 1;
+  }
 }
